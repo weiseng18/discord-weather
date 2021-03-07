@@ -54,9 +54,8 @@ async def check(ctx):
 	closestStations = sortedStationInfo[:3]
 
 	# print last update timestamp
-	output = "Last updated at: {0}".format(LAST_UPDATE)
-	await ctx.channel.send(output)
-
+	output = "Last updated at: {0}\n".format(LAST_UPDATE)
+	
 	# get rainfall info
 	for station in closestStations:
 		ID = station["id"]
@@ -64,7 +63,8 @@ async def check(ctx):
 		DISTANCE = station["distance"]
 		RAINFALL = [reading for reading in readings if reading.get("station_id") == ID][0]["value"]
 
-		output = "Station at {0}, {1:.2f} km away, has reading {2} {3}".format(NAME, DISTANCE, RAINFALL, UNIT)
-		await ctx.channel.send(output)
+		output += "Station at {0}, {1:.2f} km away, has reading {2} {3}\n".format(NAME, DISTANCE, RAINFALL, UNIT)
+
+	await ctx.channel.send(output)
 
 client.run(TOKEN)

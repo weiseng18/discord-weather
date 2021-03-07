@@ -41,3 +41,10 @@ def haversine(A, B):
 def deg2rad(deg):
 	from math import pi
 	return deg * (pi / 180)
+
+# convert ISO time to human readable format
+def iso2readable(date):
+	from datetime import datetime
+	date = datetime.fromisoformat(date)
+	output = date.strftime("%d %B %Y, %I:%M%p")
+	return output

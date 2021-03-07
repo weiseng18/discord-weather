@@ -8,6 +8,11 @@ from discord.ext import commands
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 
+ADDR_LAT = os.getenv('ADDR_LAT')
+ADDR_LONG = os.getenv('ADDR_LONG')
+
+URL_RAIN = os.getenv('URL_RAIN')
+
 # bot constants
 prefix = "!"
 client = commands.Bot(command_prefix = prefix)

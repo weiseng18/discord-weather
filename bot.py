@@ -14,8 +14,6 @@ TOKEN = os.getenv('DISCORD_TOKEN')
 ADDR_LAT = os.getenv('ADDR_LAT')
 ADDR_LONG = os.getenv('ADDR_LONG')
 
-URL_RAIN = os.getenv('URL_RAIN')
-
 # bot constants
 prefix = "!"
 client = commands.Bot(command_prefix = prefix)
@@ -37,6 +35,8 @@ async def on_ready():
 	brief="placeholder"
 )
 async def check(ctx):
+	URL_RAIN = "https://api.data.gov.sg/v1/environment/rainfall"
+
 	# pull data from data.gov.sg
 	json = getJSON(URL_RAIN)
 

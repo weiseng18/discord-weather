@@ -4,6 +4,9 @@ from dotenv import load_dotenv
 import discord
 from discord.ext import commands
 
+# helper.py
+from helper import *
+
 # get environment variables
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')

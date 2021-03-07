@@ -18,6 +18,9 @@ ADDR_LONG = os.getenv('ADDR_LONG')
 prefix = "!"
 client = commands.Bot(command_prefix = prefix)
 
+# last update of forecast
+LAST_UPDATE_FORECAST = 0
+
 # ---------------
 # bot events
 # ---------------
@@ -25,6 +28,7 @@ client = commands.Bot(command_prefix = prefix)
 @client.event
 async def on_ready():
     print(f'{client.user} has connected to Discord!')
+    forecast.start()
 
 # ---------------
 # bot commands
@@ -66,5 +70,43 @@ async def check(ctx):
 		output += "Station at {0}, {1:.2f} km away, has reading {2} {3}\n".format(NAME, DISTANCE, RAINFALL, UNIT)
 
 	await ctx.channel.send(output)
+
+# ---------------
+# bot functionality
+# ---------------
+
+@tasks.loop(seconds=1.0)
+async def forecast():
+	global client
+	global LAST_UPDATE_FORECAST
+
+	URL_FORECAST = "https://api.data.gov.sg/v1/environment/2-hour-weather-forecast"
+
+	json = getJSON(URL_FORECAST)
+
+	# put data into meaningful variables
+	validity = json["items"][0]["valid_period"]
+	forecasts = json["items"][0]["forecasts"]
+	update = json["items"][0]["update_timestamp"]
+
+	# check if there has been a change in data
+	if update == LAST_UPDATE_FORECAST:
+		return
+
+	LAST_UPDATE_FORECAST = update
+
+	# print last update timestamp
+	output = "Last updated at: {0}\nForecast for next 2 hours:\n".format(iso2readable(LAST_UPDATE_FORECAST))
+
+	# locations interested in
+	locations = ["Punggol", "Sengkang"]
+	for location in locations:
+		FORECAST = [forecast for forecast in forecasts if forecast.get("area") == location][0]["forecast"]
+		output += "{0}: {1}\n".format(location, FORECAST)
+
+	# search for channel
+	channel = discord.utils.get(client.guilds[0].text_channels, name="weather")
+	await channel.send(output)
+
 
 client.run(TOKEN)

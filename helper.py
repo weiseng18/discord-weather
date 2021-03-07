@@ -4,6 +4,26 @@ def getJSON(URL):
 	json = get(URL).json()
 	return json
 
+# for sorting by key
+def get_distance(station):
+	return station.get("distance")
+
+# calculate distance of stations from point P, and insert as object property, then sort
+def distances(stations, P):
+	for i in range(len(stations)):
+		currStation = stations[i]
+		# contains latitude and longitude
+		currLocation = currStation["location"]
+		# calculate distance
+		dist = haversine(currLocation, P)
+		# insert as property
+		stations[i]["distance"] = dist
+
+	# sort by distance
+	stations = sorted(stations, key=get_distance)
+	
+	return stations
+
 # distance between two points, given latitudes and longitudes
 def haversine(A, B):
 	from math import sin, cos, asin, sqrt

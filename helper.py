@@ -45,6 +45,11 @@ def deg2rad(deg):
 # convert ISO time to human readable format
 def iso2readable(date):
 	from datetime import datetime
+
+	# patch, because datetime.fromisoformat is only available in Python >= 3.7
+	from backports.datetime_fromisoformat import MonkeyPatch
+	MonkeyPatch.patch_fromisoformat()
+
 	date = datetime.fromisoformat(date)
 	output = date.strftime("%d %B %Y, %I:%M%p")
 	return output

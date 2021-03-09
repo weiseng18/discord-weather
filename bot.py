@@ -98,11 +98,21 @@ async def forecast():
 	# print last update timestamp
 	output = "Last updated at: {0}\nForecast for next 2 hours:\n".format(iso2readable(LAST_UPDATE_FORECAST))
 
+	# check if there is rain
+	hasRain = False
+	rainTexts = ["Rain", "Shower"]
+
 	# locations interested in
 	locations = ["Punggol", "Sengkang"]
 	for location in locations:
 		FORECAST = [forecast for forecast in forecasts if forecast.get("area") == location][0]["forecast"]
+		if any(text in FORECAST for text in rainTexts):
+			hasRain = True
 		output += "{0}: {1}\n".format(location, FORECAST)
+
+	# if there is rain, ping everyone
+	if hasRain:
+		output += "@everyone\n"
 
 	# search for channel
 	channel = discord.utils.get(client.guilds[0].text_channels, name="weather")

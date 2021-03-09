@@ -59,7 +59,7 @@ async def check(ctx):
 
 	# print last update timestamp
 	output = "Last updated at: {0}\n".format(LAST_UPDATE)
-	
+
 	# get rainfall info
 	for station in closestStations:
 		ID = station["id"]

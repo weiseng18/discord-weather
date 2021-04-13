@@ -115,8 +115,9 @@ async def forecast():
 		output += "@everyone\n"
 
 	# search for channel
-	channel = discord.utils.get(client.guilds[0].text_channels, name="weather")
-	await channel.send(output)
+	for guild in client.guilds:
+		channel = discord.utils.get(guild.text_channels, name="weather")
+		await channel.send(output)
 
 
 client.run(TOKEN)

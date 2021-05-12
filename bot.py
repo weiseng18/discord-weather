@@ -75,7 +75,7 @@ async def check(ctx):
 # bot functionality
 # ---------------
 
-@tasks.loop(minutes=10.0)
+@tasks.loop(minutes=1.0)
 async def forecast():
 	global client
 	global LAST_UPDATE_FORECAST
